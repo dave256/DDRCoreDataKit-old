@@ -51,7 +51,7 @@ class DDRCoreDataDocument: NSObject {
         super.init()
     }
 
-    func saveContext(wait: Bool) {
+    func saveContext(wait: Bool, error : NSErrorPointer) {
         if mainQueueObjectContext == nil {
             return
         }
@@ -60,8 +60,11 @@ class DDRCoreDataDocument: NSObject {
             mainQueueObjectContext?.performBlockAndWait {
                 var saveError : NSError? = nil
                 if self.mainQueueObjectContext?.save(&saveError) {
-                    if let error = saveError {
-                        println("error saving mainQueueObjectContext: \(error.localizedDescription)")
+                    if let theError = saveError {
+                        println("error saving mainQueueObjectContext: \(theError.localizedDescription)")
+                        if error {
+                            error.memory = theError
+                        }
                     }
                 }
             }
@@ -70,8 +73,11 @@ class DDRCoreDataDocument: NSObject {
         var saveClosure : () -> () = {
             var saveError : NSError? = nil
             if self.privateMOC?.save(&saveError) {
-                if let error = saveError {
-                    println("error saving privateMOC: \(error.localizedDescription)")
+                if let theError = saveError {
+                    println("error saving privateMOC: \(theError.localizedDescription)")
+                    if error {
+                        error.memory = theError
+                    }
                 }
             }
 

@@ -4,7 +4,13 @@
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="SyncedPerson" representedClassName="SyncedPerson" syncable="YES">
+        <attribute name="ddrSyncIdentifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
         <element name="Person" positionX="-63" positionY="-18" width="128" height="75"/>
+        <element name="SyncedPerson" positionX="-63" positionY="0" width="128" height="90"/>
     </elements>
 </model>

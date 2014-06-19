@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		030D23C319537A4400C19059 /* DDRSyncedManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030D23C219537A4400C19059 /* DDRSyncedManagedObject.swift */; };
+		030D23C819537D3500C19059 /* SyncedPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030D23C719537D3500C19059 /* SyncedPerson.swift */; };
 		03D305A8194B8AAC00FF2F68 /* DDRCoreDataKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 03D305A7194B8AAC00FF2F68 /* DDRCoreDataKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03D305AE194B8AAD00FF2F68 /* DDRCoreDataKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D305A2194B8AAC00FF2F68 /* DDRCoreDataKit.framework */; };
 		03D305B5194B8AAD00FF2F68 /* DDRCoreDataKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D305B4194B8AAD00FF2F68 /* DDRCoreDataKitTests.swift */; };
@@ -29,6 +31,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		030D23C219537A4400C19059 /* DDRSyncedManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDRSyncedManagedObject.swift; sourceTree = "<group>"; };
+		030D23C719537D3500C19059 /* SyncedPerson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncedPerson.swift; sourceTree = "<group>"; };
 		0377211F194BBDBA00AEC5B0 /* DDRCoreDataKitTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DDRCoreDataKitTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		03D305A2194B8AAC00FF2F68 /* DDRCoreDataKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DDRCoreDataKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		03D305A6194B8AAC00FF2F68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -86,6 +90,7 @@
 				03D305A5194B8AAC00FF2F68 /* Supporting Files */,
 				03D305BE194B8B7A00FF2F68 /* DDRManagedObject.swift */,
 				03D305C1194B9F6A00FF2F68 /* DDRCoreDataDocument.swift */,
+				030D23C219537A4400C19059 /* DDRSyncedManagedObject.swift */,
 			);
 			path = DDRCoreDataKit;
 			sourceTree = "<group>";
@@ -101,11 +106,12 @@
 		03D305B1194B8AAD00FF2F68 /* DDRCoreDataKitTests */ = {
 			isa = PBXGroup;
 			children = (
-				0377211F194BBDBA00AEC5B0 /* DDRCoreDataKitTests-Bridging-Header.h */,
 				03D305B4194B8AAD00FF2F68 /* DDRCoreDataKitTests.swift */,
-				03D305B2194B8AAD00FF2F68 /* Supporting Files */,
-				03D305C4194BB3A900FF2F68 /* DDRCoreDataTests.xcdatamodeld */,
 				03D305CE194BB45300FF2F68 /* Person.swift */,
+				030D23C719537D3500C19059 /* SyncedPerson.swift */,
+				03D305C4194BB3A900FF2F68 /* DDRCoreDataTests.xcdatamodeld */,
+				0377211F194BBDBA00AEC5B0 /* DDRCoreDataKitTests-Bridging-Header.h */,
+				03D305B2194B8AAD00FF2F68 /* Supporting Files */,
 			);
 			path = DDRCoreDataKitTests;
 			sourceTree = "<group>";
@@ -228,6 +234,7 @@
 			files = (
 				03D305C2194B9F6A00FF2F68 /* DDRCoreDataDocument.swift in Sources */,
 				03D305BF194B8B7A00FF2F68 /* DDRManagedObject.swift in Sources */,
+				030D23C319537A4400C19059 /* DDRSyncedManagedObject.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,6 +242,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				030D23C819537D3500C19059 /* SyncedPerson.swift in Sources */,
 				03D305CF194BB45300FF2F68 /* Person.swift in Sources */,
 				03D305C3194B9F6A00FF2F68 /* DDRCoreDataDocument.swift in Sources */,
 				03D305C6194BB3A900FF2F68 /* DDRCoreDataTests.xcdatamodeld in Sources */,
