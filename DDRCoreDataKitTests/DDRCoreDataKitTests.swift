@@ -61,34 +61,22 @@ class DDRCoreDataKitTests: XCTestCase {
     }
 
     func insertDaveReedInManagedObjectContext(moc: NSManagedObjectContext) {
-        //var p = NSEntityDescription.insertNewObjectForEntityForName("Person", inManagedObjectContext: moc) as Person
         var p = Person.newInstanceInManagedObjectContext(moc) as Person
-        p.setValue("Dave", forKey: "firstName")
-        p.setValue("Reed", forKey: "lastName")
-
         p.firstName = "Dave"
         p.lastName = "Reed"
     }
 
 
     func insertDaveSmithInManagedObjectContext(moc: NSManagedObjectContext) {
-    var p = NSEntityDescription.insertNewObjectForEntityForName("Person", inManagedObjectContext: moc) as Person
-
+        var p = NSEntityDescription.insertNewObjectForEntityForName("Person", inManagedObjectContext: moc) as Person
         p.firstName = "Dave"
         p.lastName = "Smith"
-
-        p.setValue("Dave", forKey: "firstName")
-        p.setValue("Smith", forKey: "lastName")
     }
 
     func insertJohnStroehInManagedObjectContext(moc: NSManagedObjectContext) {
-    var p = NSEntityDescription.insertNewObjectForEntityForName("Person", inManagedObjectContext: moc) as Person
-
+        var p = NSEntityDescription.insertNewObjectForEntityForName("Person", inManagedObjectContext: moc) as Person
         p.firstName = "John"
         p.lastName = "Stroeh"
-
-        p.setValue("John", forKey: "firstName")
-        p.setValue("Stroeh", forKey: "lastName")
     }
 
 }

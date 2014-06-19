@@ -9,14 +9,9 @@
 import CoreData
 import DDRCoreDataKit
 
-@objc class Person : DDRManagedObject  {
+@objc(Person) class Person : DDRManagedObject  {
 
     @NSManaged var firstName : NSString
     @NSManaged var lastName : NSString
-
-
-    override class func entityName() -> String {
-        return "Person"
-    }
 
 }

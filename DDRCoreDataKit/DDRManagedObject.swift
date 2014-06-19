@@ -8,44 +8,21 @@
 
 import CoreData
 
-@objc class DDRManagedObject: NSManagedObject {
-
-/*
-    init(insertIntoManagedObjectContext context: NSManagedObjectContext) {
-        var entityDescription = NSEntityDescription.entityForName(entityName(), inManagedObjectContext: context)
-        super.init(entity: entityDescription, insertIntoManagedObjectContext: context)
-    }
-*/
-
+// subclasses must use syntax:
+// @objc(Person) class Person : DDRManagedObject
+// otherwise entityName method will not work
+class DDRManagedObject: NSManagedObject {
 
     class func newInstanceInManagedObjectContext(context: NSManagedObjectContext) -> AnyObject {
         return NSEntityDescription.insertNewObjectForEntityForName(self.entityName(), inManagedObjectContext: context)
     }
 
-
     class func entityName() -> String {
-        var s = NSStringFromClass(self)
-        NSLog("entityName in DDRManagedObject: %@", s)
-        return s
-        //return "Person"
+        return NSStringFromClass(self)
     }
 
     class func fetchRequest() -> NSFetchRequest {
         return NSFetchRequest(entityName: entityName())
-    }
-
-    class func allInstancesWithPredicate(predicate: NSPredicate?, inManagedObjectContext moc: NSManagedObjectContext) -> AnyObject[]! {
-        var request = self.fetchRequest()
-
-        if let pred = predicate {
-            request.predicate = pred
-        }
-        var error : NSErrorPointer = nil
-        var results = moc.executeFetchRequest(request, error: error)
-        if error != nil {
-            println("Error loading \(request) \(predicate) \(error)")
-        }
-        return results
     }
 
     class func allInstancesWithPredicate(predicate: NSPredicate?, sortDescriptors : NSSortDescriptor[]?, inManagedObjectContext moc: NSManagedObjectContext) -> AnyObject[]! {
@@ -63,6 +40,10 @@ import CoreData
             println("Error loading \(request) \(predicate) \(error)")
         }
         return results
+    }
+
+    class func allInstancesWithPredicate(predicate: NSPredicate?, inManagedObjectContext moc: NSManagedObjectContext) -> AnyObject[]! {
+        return allInstancesWithPredicate(predicate, sortDescriptors: nil, inManagedObjectContext: moc)
     }
 
     class func allInstances(managedObjectContext moc : NSManagedObjectContext) -> AnyObject[]! {
