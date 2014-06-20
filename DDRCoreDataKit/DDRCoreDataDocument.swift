@@ -51,9 +51,9 @@ class DDRCoreDataDocument: NSObject {
         super.init()
     }
 
-    func saveContext(wait: Bool, error : NSErrorPointer) {
+    func saveContext(wait: Bool, error : NSErrorPointer) -> Bool {
         if mainQueueObjectContext == nil {
-            return
+            return false
         }
 
         if mainQueueObjectContext?.hasChanges {
@@ -80,19 +80,27 @@ class DDRCoreDataDocument: NSObject {
                     }
                 }
             }
-
         }
 
-        if privateMOC?.hasChanges {
-            if wait {
-                privateMOC?.performBlockAndWait(saveClosure)
+        if !error {
+            if privateMOC?.hasChanges {
+                if wait {
+                    privateMOC?.performBlockAndWait(saveClosure)
+                }
+                else {
+                    privateMOC?.performBlock(saveClosure)
+                }
             }
-            else {
-                privateMOC?.performBlock(saveClosure)
-            }
+        }
+
+        if error {
+            return false
+        } else {
+            return true
         }
     }
 
+    
     func newChildOfMainObjectContextWithConcurrencyType(concurrencyType : NSManagedObjectContextConcurrencyType) -> NSManagedObjectContext {
         var moc = NSManagedObjectContext(concurrencyType: concurrencyType)
         moc.parentContext = mainQueueObjectContext
