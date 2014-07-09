@@ -15,7 +15,7 @@ import DDRCoreDataKit
 
 @objc(Person) class Person : DDRSyncedManagedObject  {
 
-    @NSManaged var firstName : NSString
-    @NSManaged var lastName : NSString
+    @NSManaged var firstName : String
+    @NSManaged var lastName : String
 
 }

@@ -36,7 +36,7 @@ class DDRManagedObject: NSManagedObject {
         return NSFetchRequest(entityName: entityName())
     }
 
-    class func allInstancesWithPredicate(predicate: NSPredicate?, sortDescriptors : NSSortDescriptor[]?, inManagedObjectContext moc: NSManagedObjectContext) -> AnyObject[]! {
+    class func allInstancesWithPredicate(predicate: NSPredicate?, sortDescriptors : [NSSortDescriptor]?, inManagedObjectContext moc: NSManagedObjectContext) -> [AnyObject]! {
         var request = self.fetchRequest()
 
         // set fetch request predicte if passed in
@@ -60,11 +60,11 @@ class DDRManagedObject: NSManagedObject {
         return results
     }
 
-    class func allInstancesWithPredicate(predicate: NSPredicate?, inManagedObjectContext moc: NSManagedObjectContext) -> AnyObject[]! {
+    class func allInstancesWithPredicate(predicate: NSPredicate?, inManagedObjectContext moc: NSManagedObjectContext) -> [AnyObject]! {
         return allInstancesWithPredicate(predicate, sortDescriptors: nil, inManagedObjectContext: moc)
     }
 
-    class func allInstances(managedObjectContext moc : NSManagedObjectContext) -> AnyObject[]! {
+    class func allInstances(managedObjectContext moc : NSManagedObjectContext) -> [AnyObject]! {
         return self.allInstancesWithPredicate(nil, sortDescriptors: nil, inManagedObjectContext: moc)
     }
 
