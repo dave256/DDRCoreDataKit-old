@@ -6,16 +6,16 @@
 //  Copyright (c) 2014 David Reed. All rights reserved.
 //
 
-class DDRSyncedManagedObject : DDRManagedObject {
+public class DDRSyncedManagedObject : DDRManagedObject {
 
-    override func awakeFromInsert() {
+    public override func awakeFromInsert() {
         super.awakeFromInsert()
         if !self.valueForKey("ddrSyncIdentifier") {
             self.setValue(NSUUID.UUID().UUIDString, forKey: "ddrSyncIdentifier")
         }
     }
 
-    override func valueForUndefinedKey(key: String!) -> AnyObject! {
+    public override func valueForUndefinedKey(key: String!) -> AnyObject! {
         if key == "ddrSyncIdentifier" {
             NSLog("no ddrSyncIdentifier for object of type")
         } else {
@@ -24,7 +24,7 @@ class DDRSyncedManagedObject : DDRManagedObject {
         return nil
     }
 
-    override func setValue(value: AnyObject!, forUndefinedKey key: String!) {
+    public override func setValue(value: AnyObject!, forUndefinedKey key: String!) {
         if key == "ddrSyncIdentifier" {
             NSLog("no ddrSyncIdentifier for object of type")
         } else {
