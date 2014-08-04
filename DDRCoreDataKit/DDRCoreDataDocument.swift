@@ -85,10 +85,10 @@ class DDRCoreDataDocument: NSObject {
         if !error {
             if privateMOC != nil && privateMOC!.hasChanges {
                 if wait {
-                    privateMOC!.performBlockAndWait(saveClosure)
+                    privateMOC?.performBlockAndWait(saveClosure)
                 }
                 else {
-                    privateMOC!.performBlock(saveClosure)
+                    privateMOC?.performBlock(saveClosure)
                 }
             }
         }
