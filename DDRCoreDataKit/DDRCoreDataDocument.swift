@@ -56,10 +56,10 @@ class DDRCoreDataDocument: NSObject {
             return false
         }
 
-        if mainQueueObjectContext?.hasChanges {
+        if mainQueueObjectContext != nil && mainQueueObjectContext!.hasChanges {
             mainQueueObjectContext?.performBlockAndWait {
                 var saveError : NSError? = nil
-                if self.mainQueueObjectContext?.save(&saveError) {
+                if self.mainQueueObjectContext != nil && self.mainQueueObjectContext!.save(&saveError) {
                     if let theError = saveError {
                         println("error saving mainQueueObjectContext: \(theError.localizedDescription)")
                         if error {
@@ -72,7 +72,7 @@ class DDRCoreDataDocument: NSObject {
 
         var saveClosure : () -> () = {
             var saveError : NSError? = nil
-            if self.privateMOC?.save(&saveError) {
+            if self.privateMOC != nil && self.privateMOC!.save(&saveError) {
                 if let theError = saveError {
                     println("error saving privateMOC: \(theError.localizedDescription)")
                     if error {
@@ -83,12 +83,12 @@ class DDRCoreDataDocument: NSObject {
         }
 
         if !error {
-            if privateMOC?.hasChanges {
+            if privateMOC != nil && privateMOC!.hasChanges {
                 if wait {
-                    privateMOC?.performBlockAndWait(saveClosure)
+                    privateMOC!.performBlockAndWait(saveClosure)
                 }
                 else {
-                    privateMOC?.performBlock(saveClosure)
+                    privateMOC!.performBlock(saveClosure)
                 }
             }
         }
