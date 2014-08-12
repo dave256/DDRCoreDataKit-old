@@ -10,13 +10,13 @@ import CoreData
 
 class DDRCoreDataDocument: NSObject {
 
-    let mainQueueObjectContext : NSManagedObjectContext?
+    let mainQueueObjectContext : NSManagedObjectContext!
     let managedObjectModel : NSManagedObjectModel
     let persistentStoreCoordinator : NSPersistentStoreCoordinator
-    let storeURL : NSURL?
+    let storeURL : NSURL!
 
     // private data
-    let privateMOC : NSManagedObjectContext?
+    let privateMOC : NSManagedObjectContext!
 
     init(storeURL: NSURL?, modelName: String, options : NSDictionary) {
         var bundle = NSBundle(forClass: DDRCoreDataDocument.self)
@@ -25,7 +25,7 @@ class DDRCoreDataDocument: NSObject {
         persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
 
         var storeType : String
-        if let sURL = storeURL {
+        if storeURL != nil {
             storeType = NSSQLiteStoreType
         } else {
             storeType = NSInMemoryStoreType
@@ -56,10 +56,10 @@ class DDRCoreDataDocument: NSObject {
             return false
         }
 
-        if mainQueueObjectContext != nil && mainQueueObjectContext!.hasChanges {
-            mainQueueObjectContext?.performBlockAndWait {
+        if mainQueueObjectContext.hasChanges {
+            mainQueueObjectContext.performBlockAndWait {
                 var saveError : NSError? = nil
-                if self.mainQueueObjectContext != nil && self.mainQueueObjectContext!.save(&saveError) {
+                if self.mainQueueObjectContext.save(&saveError) {
                     if let theError = saveError {
                         println("error saving mainQueueObjectContext: \(theError.localizedDescription)")
                         if error {
@@ -72,7 +72,7 @@ class DDRCoreDataDocument: NSObject {
 
         var saveClosure : () -> () = {
             var saveError : NSError? = nil
-            if self.privateMOC != nil && self.privateMOC!.save(&saveError) {
+            if self.privateMOC.save(&saveError) {
                 if let theError = saveError {
                     println("error saving privateMOC: \(theError.localizedDescription)")
                     if error {
@@ -83,12 +83,12 @@ class DDRCoreDataDocument: NSObject {
         }
 
         if !error {
-            if privateMOC != nil && privateMOC!.hasChanges {
+            if privateMOC.hasChanges {
                 if wait {
-                    privateMOC?.performBlockAndWait(saveClosure)
+                    privateMOC.performBlockAndWait(saveClosure)
                 }
                 else {
-                    privateMOC?.performBlock(saveClosure)
+                    privateMOC.performBlock(saveClosure)
                 }
             }
         }

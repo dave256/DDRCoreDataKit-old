@@ -13,7 +13,7 @@ import DDRCoreDataKit
 class DDRCoreDataKitTests: XCTestCase {
 
     var storeURL : NSURL? = nil
-    var doc : DDRCoreDataDocument? = nil
+    var doc : DDRCoreDataDocument! = nil
 
     override func setUp() {
         super.setUp()
@@ -39,17 +39,16 @@ class DDRCoreDataKitTests: XCTestCase {
 */
 
     func testInsertionOfPersonObjects() {
-        var moc = doc?.mainQueueObjectContext
+        var moc = doc.mainQueueObjectContext
 
-        if let mainMOC = moc {
-            var mainMOC = moc!
-            insertDaveReedInManagedObjectContext(mainMOC)
-            insertDaveSmithInManagedObjectContext(mainMOC)
-            insertJohnStroehInManagedObjectContext(mainMOC)
+        if moc != nil {
+            insertDaveReedInManagedObjectContext(moc)
+            insertDaveSmithInManagedObjectContext(moc)
+            insertJohnStroehInManagedObjectContext(moc)
 
             var sorters = [NSSortDescriptor(key: "lastName", ascending: true), NSSortDescriptor(key: "firstName", ascending: true)]
             var predicate = NSPredicate(format: "%K=%@", "firstName", "Dave")
-            var items = Person.allInstancesWithPredicate(predicate, sortDescriptors: sorters, inManagedObjectContext: mainMOC)
+            var items = Person.allInstancesWithPredicate(predicate, sortDescriptors: sorters, inManagedObjectContext: moc)
             XCTAssertEqual(items.count, 2, "items.count is not 2")
             var p : Person
             p = items[0] as Person
@@ -58,7 +57,7 @@ class DDRCoreDataKitTests: XCTestCase {
             assertDaveSmith(p)
 
             var error : NSError?
-            doc?.saveContext(true, error: &error)
+            doc.saveContext(true, error: &error)
             XCTAssertNil(error, "save error not nil: \(error?.localizedDescription) \(error?.userInfo)")
         } else {
             XCTFail("mainMOC is nil")
@@ -66,17 +65,17 @@ class DDRCoreDataKitTests: XCTestCase {
     }
 
     func testChildManagedObjectContext() {
-        var moc = doc?.mainQueueObjectContext
+        var moc = doc.mainQueueObjectContext
 
-        if let mainMOC = moc {
-            let childMOC = doc?.newChildOfMainObjectContextWithConcurrencyType(NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType)
-            insertDaveReedInManagedObjectContext(mainMOC)
-            insertDaveSmithInManagedObjectContext(mainMOC)
-            childMOC?.performBlockAndWait() {
-                self.insertJohnStroehInManagedObjectContext(childMOC!)
+        if moc != nil {
+            let childMOC = doc.newChildOfMainObjectContextWithConcurrencyType(NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType)
+            insertDaveReedInManagedObjectContext(moc)
+            insertDaveSmithInManagedObjectContext(moc)
+            childMOC.performBlockAndWait() {
+                self.insertJohnStroehInManagedObjectContext(childMOC)
             }
             var sorters = [NSSortDescriptor(key: "lastName", ascending: true), NSSortDescriptor(key: "firstName", ascending: true)]
-            var items = Person.allInstancesWithPredicate(nil, sortDescriptors: sorters, inManagedObjectContext: mainMOC)
+            var items = Person.allInstancesWithPredicate(nil, sortDescriptors: sorters, inManagedObjectContext: moc)
             XCTAssertEqual(items.count, 2, "items.count is not 2")
 
             var p : Person
@@ -85,8 +84,8 @@ class DDRCoreDataKitTests: XCTestCase {
             p = items[1] as Person
             assertDaveSmith(p)
 
-            childMOC?.performBlockAndWait() {
-                items = Person.allInstancesWithPredicate(nil, sortDescriptors: sorters, inManagedObjectContext: childMOC!)
+            childMOC.performBlockAndWait() {
+                items = Person.allInstancesWithPredicate(nil, sortDescriptors: sorters, inManagedObjectContext: childMOC)
             }
             // childMOC should have 3 items
             XCTAssertEqual(items.count, 3, "items.count is not 3")
@@ -94,17 +93,17 @@ class DDRCoreDataKitTests: XCTestCase {
             assertJohnStroeh(p)
 
             // mainMOC should still have 2 items
-            items = Person.allInstancesWithPredicate(nil, sortDescriptors: sorters, inManagedObjectContext: mainMOC)
+            items = Person.allInstancesWithPredicate(nil, sortDescriptors: sorters, inManagedObjectContext: moc)
             XCTAssertEqual(items.count, 2, "items.count is not 2")
 
-            childMOC?.performBlockAndWait() {
+            childMOC.performBlockAndWait() {
                 var error : NSError? = nil
-                childMOC?.save(&error)
+                childMOC.save(&error)
                 XCTAssertNil(error, "childMOC save error not nil: \(error?.localizedDescription) \(error?.userInfo)")
             }
 
             // now mainMOC should have 3 items
-            items = Person.allInstancesWithPredicate(nil, sortDescriptors: sorters, inManagedObjectContext: mainMOC)
+            items = Person.allInstancesWithPredicate(nil, sortDescriptors: sorters, inManagedObjectContext: moc)
             // childMOC should have 3 items
             XCTAssertEqual(items.count, 3, "items.count is not 3")
             p = items[2] as Person
@@ -120,11 +119,10 @@ class DDRCoreDataKitTests: XCTestCase {
     }
 
     func testSyncedPerson() {
-        var moc = doc?.mainQueueObjectContext
+        var moc = doc.mainQueueObjectContext
 
-        if let mainMOC = moc {
-
-            var p = SyncedPerson.newInstanceInManagedObjectContext(mainMOC) as SyncedPerson
+        if moc != nil {
+            var p = SyncedPerson.newInstanceInManagedObjectContext(moc) as SyncedPerson
             p.firstName = "Dave"
             p.lastName = "Reed"
             XCTAssertNotNil(p.ddrSyncIdentifier, "ddrSyncIdentifier is not nil")
