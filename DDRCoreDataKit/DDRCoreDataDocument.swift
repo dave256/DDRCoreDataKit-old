@@ -31,7 +31,7 @@ class DDRCoreDataDocument: NSObject {
             storeType = NSInMemoryStoreType
         }
         var addError : NSError? = nil
-        if !persistentStoreCoordinator.addPersistentStoreWithType(storeType, configuration: nil, URL: storeURL, options: options, error: &addError) {
+        if !(persistentStoreCoordinator.addPersistentStoreWithType(storeType, configuration: nil, URL: storeURL, options: options, error: &addError) != nil) {
             if let error = addError {
                 println("Error adding persitent store to coordinator \(error.localizedDescription) \(error.userInfo!)")
 
@@ -62,7 +62,7 @@ class DDRCoreDataDocument: NSObject {
                 if self.mainQueueObjectContext.save(&saveError) {
                     if let theError = saveError {
                         println("error saving mainQueueObjectContext: \(theError.localizedDescription)")
-                        if error {
+                        if error != nil {
                             error.memory = theError
                         }
                     }
@@ -75,14 +75,14 @@ class DDRCoreDataDocument: NSObject {
             if self.privateMOC.save(&saveError) {
                 if let theError = saveError {
                     println("error saving privateMOC: \(theError.localizedDescription)")
-                    if error {
+                    if error != nil {
                         error.memory = theError
                     }
                 }
             }
         }
 
-        if !error {
+        if error != nil {
             if privateMOC.hasChanges {
                 if wait {
                     privateMOC.performBlockAndWait(saveClosure)
@@ -93,7 +93,7 @@ class DDRCoreDataDocument: NSObject {
             }
         }
 
-        if error {
+        if error != nil {
             return false
         } else {
             return true

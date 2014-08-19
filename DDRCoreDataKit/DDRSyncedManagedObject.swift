@@ -10,7 +10,8 @@ public class DDRSyncedManagedObject : DDRManagedObject {
 
     public override func awakeFromInsert() {
         super.awakeFromInsert()
-        if !self.valueForKey("ddrSyncIdentifier") {
+        var desc = self.entity
+        if desc.attributesByName["ddrSyncIdentifier"] != nil {
             self.setValue(NSUUID.UUID().UUIDString, forKey: "ddrSyncIdentifier")
         }
     }
