@@ -21,7 +21,7 @@ class DDRCoreDataDocument: NSObject {
     init(storeURL: NSURL?, modelName: String, options : NSDictionary) {
         var bundle = NSBundle(forClass: DDRCoreDataDocument.self)
         var modelURL = bundle.URLForResource(modelName, withExtension: "momd")
-        managedObjectModel = NSManagedObjectModel(contentsOfURL: modelURL)
+        managedObjectModel = NSManagedObjectModel(contentsOfURL: modelURL!)
         persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
 
         var storeType : String
