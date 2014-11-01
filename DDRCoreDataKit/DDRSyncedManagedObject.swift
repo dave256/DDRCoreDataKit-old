@@ -12,20 +12,20 @@ public class DDRSyncedManagedObject : DDRManagedObject {
         super.awakeFromInsert()
         var desc = self.entity
         if desc.attributesByName["ddrSyncIdentifier"] != nil {
-            self.setValue(NSUUID.UUID().UUIDString, forKey: "ddrSyncIdentifier")
+            self.setValue(NSUUID().UUIDString, forKey: "ddrSyncIdentifier")
         }
     }
 
-    public override func valueForUndefinedKey(key: String!) -> AnyObject! {
+    public override func valueForUndefinedKey(key: String) -> AnyObject {
         if key == "ddrSyncIdentifier" {
             NSLog("no ddrSyncIdentifier for object of type")
         } else {
             super.valueForUndefinedKey(key)
         }
-        return nil
+        return ""
     }
 
-    public override func setValue(value: AnyObject!, forUndefinedKey key: String!) {
+    public override func setValue(value: AnyObject!, forUndefinedKey key: String) {
         if key == "ddrSyncIdentifier" {
             NSLog("no ddrSyncIdentifier for object of type")
         } else {
