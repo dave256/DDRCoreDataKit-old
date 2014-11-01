@@ -1,17 +1,10 @@
-//
-//  DDRSyncedManagedObject.swift
-//  DDRCoreDataKit
-//
-//  Created by David Reed on 6/19/14.
-//  Copyright (c) 2014 David Reed. All rights reserved.
-//
+import Foundation
 
-// after switching to MOGenerator, they inherict from DDRManagedObject
-// so just copy these methods into the non-generated file
+@objc(SyncedPerson)
+class SyncedPerson: _SyncedPerson {
 
-public class DDRSyncedManagedObject : DDRManagedObject {
-
-    public override func awakeFromInsert() {
+	// Custom logic goes here.
+    override func awakeFromInsert() {
         super.awakeFromInsert()
         var desc = self.entity
         if desc.attributesByName["ddrSyncIdentifier"] != nil {
@@ -19,7 +12,7 @@ public class DDRSyncedManagedObject : DDRManagedObject {
         }
     }
 
-    public override func valueForUndefinedKey(key: String) -> AnyObject {
+    override func valueForUndefinedKey(key: String) -> AnyObject {
         if key == "ddrSyncIdentifier" {
             NSLog("no ddrSyncIdentifier for object of type")
         } else {
@@ -28,7 +21,7 @@ public class DDRSyncedManagedObject : DDRManagedObject {
         return ""
     }
 
-    public override func setValue(value: AnyObject!, forUndefinedKey key: String) {
+    override func setValue(value: AnyObject!, forUndefinedKey key: String) {
         if key == "ddrSyncIdentifier" {
             NSLog("no ddrSyncIdentifier for object of type")
         } else {
@@ -37,4 +30,3 @@ public class DDRSyncedManagedObject : DDRManagedObject {
     }
 
 }
-

@@ -15,21 +15,23 @@ import CoreData
 /** DDRManagedObject is a standard subclass of NSManagedObject with convenience methods for creating new instances and fetch requests
 note: subclass must use the syntax: @objc(Person) class Person : DDRSyncedManagedObject
 when creating a subclass otherise the entityName method will not work
+
+updated to now work with MOGenerator
+
+put code such as the following in a Run Script build phase and move it before the compile step
+cd "$PROJECT_DIR/DDRCoreDataKitTests" && /usr/local/bin/mogenerator --swift -m DDRCoreDataTests.xcdatamodeld/DDRCoreDataTests.xcdatamodel --base-class DDRManagedObject --output-dir ./ModelObjects
 */
 public class DDRManagedObject: NSManagedObject {
 
-    /**
-    returns a newly inserted NSManagedObject. when using with your own subclass cast using name of your subclass
-    var Person p = Person.newInstanceInManagedObjectContext(moc) as Person
-    @param context NSManagedObjectContext to insert the object into
-    @return a newly inserted NSManagedObject subclass in the specified context
-    */
-    public class func newInstanceInManagedObjectContext(context: NSManagedObjectContext) -> AnyObject {
-        return NSEntityDescription.insertNewObjectForEntityForName(self.entityName(), inManagedObjectContext: context)
+
+    // overriden by MOGenerator generated base class
+    public class func entityName() -> String {
+        return ""
     }
 
-    public class func entityName() -> String {
-        return NSStringFromClass(self)
+    // overriden by MOGenerator generated base class
+    class func entity(managedObjectContext: NSManagedObjectContext!) -> NSEntityDescription! {
+        return nil // NSEntityDescription.entityForName(self.entityName(), inManagedObjectContext: managedObjectContext);
     }
 
     public class func fetchRequest() -> NSFetchRequest {
@@ -67,5 +69,5 @@ public class DDRManagedObject: NSManagedObject {
     public class func allInstances(managedObjectContext moc : NSManagedObjectContext) -> [AnyObject]! {
         return self.allInstancesWithPredicate(nil, sortDescriptors: nil, inManagedObjectContext: moc)
     }
-
+    
 }

@@ -122,7 +122,7 @@ class DDRCoreDataKitTests: XCTestCase {
         var moc = doc.mainQueueObjectContext
 
         if moc != nil {
-            var p = SyncedPerson.newInstanceInManagedObjectContext(moc) as SyncedPerson
+            var p = SyncedPerson(managedObjectContext: moc)
             p.firstName = "Dave"
             p.lastName = "Reed"
             XCTAssertNotNil(p.ddrSyncIdentifier, "ddrSyncIdentifier is not nil")
@@ -132,7 +132,8 @@ class DDRCoreDataKitTests: XCTestCase {
     // MARK: - helper methods
 
     func insertPersonWithFirstName(firstName: String, lastName: String, inManagedObjectContext moc: NSManagedObjectContext) {
-        var p = Person.newInstanceInManagedObjectContext(moc) as Person
+        //var p = Person.newInstanceInManagedObjectContext(moc) as Person
+        var p = Person(managedObjectContext: moc)
         p.firstName = firstName
         p.lastName = lastName
     }
@@ -150,8 +151,8 @@ class DDRCoreDataKitTests: XCTestCase {
     }
 
     func assertPerson(person : Person, hasFirstName firstName: String, lastName: String) {
-        XCTAssertEqual(person.firstName, firstName, "first name is not \(firstName)")
-        XCTAssertEqual(person.lastName, lastName, "first name is not \(lastName)")
+        XCTAssertEqual(person.firstName!, firstName, "first name is not \(firstName)")
+        XCTAssertEqual(person.lastName!, lastName, "first name is not \(lastName)")
     }
 
     func assertDaveReed(person: Person) {
