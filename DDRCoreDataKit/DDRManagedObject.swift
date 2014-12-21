@@ -25,7 +25,7 @@ public class DDRManagedObject: NSManagedObject {
 
 
     // overriden by MOGenerator generated base class
-    public class func entityName() -> String {
+    class func entityName() -> String {
         return ""
     }
 
