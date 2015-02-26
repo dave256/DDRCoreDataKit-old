@@ -39,7 +39,7 @@ class DDRCoreDataKitTests: XCTestCase {
 */
 
     func testInsertionOfPersonObjects() {
-        var moc = doc.mainQueueObjectContext
+        var moc = doc.mainQueueMOC
 
         if moc != nil {
             insertDaveReedInManagedObjectContext(moc)
@@ -51,9 +51,9 @@ class DDRCoreDataKitTests: XCTestCase {
             var items = Person.allInstancesWithPredicate(predicate, sortDescriptors: sorters, inManagedObjectContext: moc)
             XCTAssertEqual(items.count, 2, "items.count is not 2")
             var p : Person
-            p = items[0] as Person
+            p = items[0] as! Person
             assertDaveReed(p)
-            p = items[1] as Person
+            p = items[1] as! Person
             assertDaveSmith(p)
 
             var error : NSError?
@@ -65,7 +65,7 @@ class DDRCoreDataKitTests: XCTestCase {
     }
 
     func testChildManagedObjectContext() {
-        var moc = doc.mainQueueObjectContext
+        var moc = doc.mainQueueMOC
 
         if moc != nil {
             let childMOC = doc.newChildOfMainObjectContextWithConcurrencyType(NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType)
@@ -79,9 +79,9 @@ class DDRCoreDataKitTests: XCTestCase {
             XCTAssertEqual(items.count, 2, "items.count is not 2")
 
             var p : Person
-            p = items[0] as Person
+            p = items[0] as! Person
             assertDaveReed(p)
-            p = items[1] as Person
+            p = items[1] as! Person
             assertDaveSmith(p)
 
             childMOC.performBlockAndWait() {
@@ -89,7 +89,7 @@ class DDRCoreDataKitTests: XCTestCase {
             }
             // childMOC should have 3 items
             XCTAssertEqual(items.count, 3, "items.count is not 3")
-            p = items[2] as Person
+            p = items[2] as! Person
             assertJohnStroeh(p)
 
             // mainMOC should still have 2 items
@@ -106,7 +106,7 @@ class DDRCoreDataKitTests: XCTestCase {
             items = Person.allInstancesWithPredicate(nil, sortDescriptors: sorters, inManagedObjectContext: moc)
             // childMOC should have 3 items
             XCTAssertEqual(items.count, 3, "items.count is not 3")
-            p = items[2] as Person
+            p = items[2] as! Person
             assertJohnStroeh(p)
 
             var error : NSError?
@@ -119,7 +119,7 @@ class DDRCoreDataKitTests: XCTestCase {
     }
 
     func testSyncedPerson() {
-        var moc = doc.mainQueueObjectContext
+        var moc = doc.mainQueueMOC
 
         if moc != nil {
             var p = SyncedPerson(managedObjectContext: moc)

@@ -19,7 +19,7 @@
 		03D305C0194B8B7A00FF2F68 /* DDRManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D305BE194B8B7A00FF2F68 /* DDRManagedObject.swift */; };
 		03D305C2194B9F6A00FF2F68 /* DDRCoreDataDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D305C1194B9F6A00FF2F68 /* DDRCoreDataDocument.swift */; };
 		03D305C3194B9F6A00FF2F68 /* DDRCoreDataDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D305C1194B9F6A00FF2F68 /* DDRCoreDataDocument.swift */; };
-		03D305C6194BB3A900FF2F68 /* DDRCoreDataTests.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 03D305C4194BB3A900FF2F68 /* DDRCoreDataTests.xcdatamodeld */; };
+		03D305C6194BB3A900FF2F68 /* DDRCoreDataKitTests.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 03D305C4194BB3A900FF2F68 /* DDRCoreDataKitTests.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,7 +47,7 @@
 		03D305B4194B8AAD00FF2F68 /* DDRCoreDataKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDRCoreDataKitTests.swift; sourceTree = "<group>"; };
 		03D305BE194B8B7A00FF2F68 /* DDRManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDRManagedObject.swift; sourceTree = "<group>"; };
 		03D305C1194B9F6A00FF2F68 /* DDRCoreDataDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDRCoreDataDocument.swift; sourceTree = "<group>"; };
-		03D305C5194BB3A900FF2F68 /* DDRCoreDataTests.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DDRCoreDataTests.xcdatamodel; sourceTree = "<group>"; };
+		03D305C5194BB3A900FF2F68 /* DDRCoreDataKitTests.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DDRCoreDataKitTests.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,7 +123,7 @@
 			children = (
 				03CCC4301A05A273000F3623 /* ModelObjects */,
 				03D305B4194B8AAD00FF2F68 /* DDRCoreDataKitTests.swift */,
-				03D305C4194BB3A900FF2F68 /* DDRCoreDataTests.xcdatamodeld */,
+				03D305C4194BB3A900FF2F68 /* DDRCoreDataKitTests.xcdatamodeld */,
 				0377211F194BBDBA00AEC5B0 /* DDRCoreDataKitTests-Bridging-Header.h */,
 				03D305B2194B8AAD00FF2F68 /* Supporting Files */,
 			);
@@ -255,7 +255,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"$PROJECT_DIR/DDRCoreDataKitTests\" && /usr/local/bin/mogenerator --swift -m DDRCoreDataTests.xcdatamodeld --base-class DDRManagedObject --output-dir ./ModelObjects";
+			shellScript = "cd \"$PROJECT_DIR/$TARGET_NAME\" && /usr/local/bin/mogenerator --swift -m \"$TARGET_NAME\".xcdatamodeld --base-class DDRManagedObject --output-dir ./ModelObjects";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -275,7 +275,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				03D305C3194B9F6A00FF2F68 /* DDRCoreDataDocument.swift in Sources */,
-				03D305C6194BB3A900FF2F68 /* DDRCoreDataTests.xcdatamodeld in Sources */,
+				03D305C6194BB3A900FF2F68 /* DDRCoreDataKitTests.xcdatamodeld in Sources */,
 				03CCC4381A05A273000F3623 /* SyncedPerson.swift in Sources */,
 				03D305B5194B8AAD00FF2F68 /* DDRCoreDataKitTests.swift in Sources */,
 				03CCC4351A05A273000F3623 /* _Person.swift in Sources */,
@@ -484,13 +484,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		03D305C4194BB3A900FF2F68 /* DDRCoreDataTests.xcdatamodeld */ = {
+		03D305C4194BB3A900FF2F68 /* DDRCoreDataKitTests.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				03D305C5194BB3A900FF2F68 /* DDRCoreDataTests.xcdatamodel */,
+				03D305C5194BB3A900FF2F68 /* DDRCoreDataKitTests.xcdatamodel */,
 			);
-			currentVersion = 03D305C5194BB3A900FF2F68 /* DDRCoreDataTests.xcdatamodel */;
-			path = DDRCoreDataTests.xcdatamodeld;
+			currentVersion = 03D305C5194BB3A900FF2F68 /* DDRCoreDataKitTests.xcdatamodel */;
+			path = DDRCoreDataKitTests.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

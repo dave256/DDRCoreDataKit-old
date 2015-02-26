@@ -19,18 +19,21 @@ when creating a subclass otherise the entityName method will not work
 updated to now work with MOGenerator
 
 put code such as the following in a Run Script build phase and move it before the compile step
-cd "$PROJECT_DIR/DDRCoreDataKitTests" && /usr/local/bin/mogenerator --swift -m DDRCoreDataTests.xcdatamodeld/DDRCoreDataTests.xcdatamodel --base-class DDRManagedObject --output-dir ./ModelObjects
+cd "$PROJECT_DIR/$TARGET_NAME" && /Users/dreed/bin/mogenerator --swift -m "$TARGET_NAME".xcdatamodeld --base-class DDRManagedObject --output-dir ./ModelObjects
+
+note: uses own version of mogenerator in https://github.com/dave256/mogenerator/tree/swift-public
+
 */
 public class DDRManagedObject: NSManagedObject {
 
 
     // overriden by MOGenerator generated base class
-    class func entityName() -> String {
+    public class func entityName() -> String {
         return ""
     }
 
     // overriden by MOGenerator generated base class
-    class func entity(managedObjectContext: NSManagedObjectContext!) -> NSEntityDescription! {
+    public class func entity(managedObjectContext: NSManagedObjectContext!) -> NSEntityDescription! {
         return nil // NSEntityDescription.entityForName(self.entityName(), inManagedObjectContext: managedObjectContext);
     }
 
@@ -38,8 +41,11 @@ public class DDRManagedObject: NSManagedObject {
         return NSFetchRequest(entityName: entityName())
     }
 
+    // return array of instances that match pedicated sorted by sortDescriptors
     public class func allInstancesWithPredicate(predicate: NSPredicate?, sortDescriptors : [NSSortDescriptor]?, inManagedObjectContext moc: NSManagedObjectContext) -> [AnyObject]! {
-        var request = self.fetchRequest()
+
+        // create a new fetch request using instance method
+        var request = fetchRequest()
 
         // set fetch request predicte if passed in
         if let pred = predicate {
@@ -62,10 +68,12 @@ public class DDRManagedObject: NSManagedObject {
         return results
     }
 
+    // return array of instances that match predicate
     public class func allInstancesWithPredicate(predicate: NSPredicate?, inManagedObjectContext moc: NSManagedObjectContext) -> [AnyObject]! {
         return allInstancesWithPredicate(predicate, sortDescriptors: nil, inManagedObjectContext: moc)
     }
 
+    // return array of all instances
     public class func allInstances(managedObjectContext moc : NSManagedObjectContext) -> [AnyObject]! {
         return self.allInstancesWithPredicate(nil, sortDescriptors: nil, inManagedObjectContext: moc)
     }

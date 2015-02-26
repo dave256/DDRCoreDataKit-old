@@ -8,35 +8,31 @@
 
 import CoreData
 
-class DDRCoreDataDocument: NSObject {
+public class DDRCoreDataDocument: NSObject {
 
-    let mainQueueObjectContext : NSManagedObjectContext!
-    let managedObjectModel : NSManagedObjectModel
-    let persistentStoreCoordinator : NSPersistentStoreCoordinator
-    let storeURL : NSURL!
+    public let mainQueueMOC : NSManagedObjectContext!
+    private let managedObjectModel : NSManagedObjectModel
+    private let persistentStoreCoordinator : NSPersistentStoreCoordinator
+    private var storeURL : NSURL! = nil
 
     // private data
-    let privateMOC : NSManagedObjectContext!
+    private var privateMOC : NSManagedObjectContext! = nil
 
-    init(storeURL: NSURL?, modelName: String, options : NSDictionary) {
+    public init(storeURL: NSURL?, modelName: String, options : NSDictionary) {
         var bundle = NSBundle(forClass: DDRCoreDataDocument.self)
         var modelURL = bundle.URLForResource(modelName, withExtension: "momd")
         managedObjectModel = NSManagedObjectModel(contentsOfURL: modelURL!)!
         persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
 
-        var storeType : String
-        if storeURL != nil {
-            storeType = NSSQLiteStoreType
-        } else {
-            storeType = NSInMemoryStoreType
-        }
+        var storeType : String = (storeURL != nil) ? NSSQLiteStoreType : NSInMemoryStoreType
+
         var addError : NSError? = nil
-        if !(persistentStoreCoordinator.addPersistentStoreWithType(storeType, configuration: nil, URL: storeURL, options: options, error: &addError) != nil) {
+        if !(persistentStoreCoordinator.addPersistentStoreWithType(storeType, configuration: nil, URL: storeURL, options: options as [NSObject : AnyObject], error: &addError) != nil) {
             if let error = addError {
                 println("Error adding persitent store to coordinator \(error.localizedDescription) \(error.userInfo!)")
 
             }
-            mainQueueObjectContext = nil
+            mainQueueMOC = nil
             privateMOC = nil
 
         } else {
@@ -44,24 +40,24 @@ class DDRCoreDataDocument: NSObject {
             privateMOC = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType)
             privateMOC!.persistentStoreCoordinator = persistentStoreCoordinator
             privateMOC!.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
-            mainQueueObjectContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
-            mainQueueObjectContext!.persistentStoreCoordinator = persistentStoreCoordinator
-            mainQueueObjectContext!.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
+            mainQueueMOC = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
+            mainQueueMOC!.persistentStoreCoordinator = persistentStoreCoordinator
+            mainQueueMOC!.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
         }
         super.init()
     }
 
-    func saveContext(wait: Bool, error : NSErrorPointer) -> Bool {
-        if mainQueueObjectContext == nil {
+    public func saveContext(wait: Bool, error : NSErrorPointer) -> Bool {
+        if mainQueueMOC == nil {
             return false
         }
 
-        if mainQueueObjectContext.hasChanges {
-            mainQueueObjectContext.performBlockAndWait {
+        if mainQueueMOC.hasChanges {
+            mainQueueMOC.performBlockAndWait {
                 var saveError : NSError? = nil
-                if self.mainQueueObjectContext.save(&saveError) {
+                if self.mainQueueMOC.save(&saveError) {
                     if let theError = saveError {
-                        println("error saving mainQueueObjectContext: \(theError.localizedDescription)")
+                        println("error saving mainQueueMOC: \(theError.localizedDescription)")
                         if error != nil {
                             error.memory = theError
                         }
@@ -101,9 +97,9 @@ class DDRCoreDataDocument: NSObject {
     }
 
     
-    func newChildOfMainObjectContextWithConcurrencyType(concurrencyType : NSManagedObjectContextConcurrencyType) -> NSManagedObjectContext {
+    public func newChildOfMainObjectContextWithConcurrencyType(concurrencyType : NSManagedObjectContextConcurrencyType) -> NSManagedObjectContext {
         var moc = NSManagedObjectContext(concurrencyType: concurrencyType)
-        moc.parentContext = mainQueueObjectContext
+        moc.parentContext = mainQueueMOC
         return moc
     }
 }
