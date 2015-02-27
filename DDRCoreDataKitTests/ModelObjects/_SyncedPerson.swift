@@ -4,21 +4,20 @@
 import CoreData
 
 enum SyncedPersonAttributes: String {
-    case ddrSyncIdentifier = "ddrSyncIdentifier"
     case firstName = "firstName"
     case lastName = "lastName"
 }
 
-@objc
+@objc public
 class _SyncedPerson: DDRManagedObject {
 
     // MARK: - Class methods
 
-    override class func entityName () -> String {
+    override public class func entityName () -> String {
         return "SyncedPerson"
     }
 
-    override class func entity(managedObjectContext: NSManagedObjectContext!) -> NSEntityDescription! {
+    override public class func entity(managedObjectContext: NSManagedObjectContext!) -> NSEntityDescription! {
         return NSEntityDescription.entityForName(self.entityName(), inManagedObjectContext: managedObjectContext);
     }
 
@@ -35,17 +34,12 @@ class _SyncedPerson: DDRManagedObject {
 
     // MARK: - Properties
 
-    @NSManaged
-    var ddrSyncIdentifier: String?
-
-    // func validateDdrSyncIdentifier(value: AutoreleasingUnsafePointer<AnyObject>, error: NSErrorPointer) {}
-
-    @NSManaged
+    @NSManaged public
     var firstName: String?
 
     // func validateFirstName(value: AutoreleasingUnsafePointer<AnyObject>, error: NSErrorPointer) {}
 
-    @NSManaged
+    @NSManaged public
     var lastName: String?
 
     // func validateLastName(value: AutoreleasingUnsafePointer<AnyObject>, error: NSErrorPointer) {}

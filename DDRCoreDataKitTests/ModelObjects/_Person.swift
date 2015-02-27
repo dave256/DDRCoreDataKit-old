@@ -8,16 +8,16 @@ enum PersonAttributes: String {
     case lastName = "lastName"
 }
 
-@objc
+@objc public
 class _Person: DDRManagedObject {
 
     // MARK: - Class methods
 
-    override class func entityName () -> String {
+    override public class func entityName () -> String {
         return "Person"
     }
 
-    override class func entity(managedObjectContext: NSManagedObjectContext!) -> NSEntityDescription! {
+    override public class func entity(managedObjectContext: NSManagedObjectContext!) -> NSEntityDescription! {
         return NSEntityDescription.entityForName(self.entityName(), inManagedObjectContext: managedObjectContext);
     }
 
@@ -34,12 +34,12 @@ class _Person: DDRManagedObject {
 
     // MARK: - Properties
 
-    @NSManaged
+    @NSManaged public
     var firstName: String?
 
     // func validateFirstName(value: AutoreleasingUnsafePointer<AnyObject>, error: NSErrorPointer) {}
 
-    @NSManaged
+    @NSManaged public
     var lastName: String?
 
     // func validateLastName(value: AutoreleasingUnsafePointer<AnyObject>, error: NSErrorPointer) {}
