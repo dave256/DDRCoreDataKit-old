@@ -14,7 +14,7 @@ class for accessing a Core Data Store
 uses two NSManagedObjectContext
 one context of type PrivateQueueConcurrencyType is used for saving to the store to avoid blocking the main thread; this context is private to the class
 
-the mainQueueMOC is a child context of the private context and is intended for use on the GUI
+the mainQueueMOC is a child context of the private context and is intended for use with the GUI
 
 also provices a method to get a child context of this main thread
 
