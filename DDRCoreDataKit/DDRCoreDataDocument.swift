@@ -18,10 +18,8 @@ public class DDRCoreDataDocument: NSObject {
     // private data
     private var privateMOC : NSManagedObjectContext! = nil
 
-    public init(storeURL: NSURL?, modelName: String, options : NSDictionary) {
-        var bundle = NSBundle(forClass: DDRCoreDataDocument.self)
-        var modelURL = bundle.URLForResource(modelName, withExtension: "momd")
-        managedObjectModel = NSManagedObjectModel(contentsOfURL: modelURL!)!
+    public init(storeURL: NSURL?, modelURL: NSURL, options : NSDictionary) {
+        managedObjectModel = NSManagedObjectModel(contentsOfURL: modelURL)!
         persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
 
         var storeType : String = (storeURL != nil) ? NSSQLiteStoreType : NSInMemoryStoreType

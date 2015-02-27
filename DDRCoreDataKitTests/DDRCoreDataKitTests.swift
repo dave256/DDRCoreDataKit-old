@@ -18,9 +18,9 @@ class DDRCoreDataKitTests: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-
         storeURL = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingPathComponent("test.sqlite"))
-        doc = DDRCoreDataDocument(storeURL: storeURL, modelName: "DDRCoreDataTests", options: NSDictionary())
+        let modelURL = NSBundle(forClass: DDRCoreDataDocument.self).URLForResource("DDRCoreDataKitTests", withExtension: "momd")!
+        doc = DDRCoreDataDocument(storeURL: storeURL, modelURL: modelURL, options: NSDictionary())
     }
     
     override func tearDown() {

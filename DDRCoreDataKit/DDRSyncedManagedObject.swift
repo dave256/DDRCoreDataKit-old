@@ -21,7 +21,7 @@ public class DDRSyncedManagedObject : DDRManagedObject {
 
     public override func valueForUndefinedKey(key: String) -> AnyObject {
         if key == "ddrSyncIdentifier" {
-            NSLog("no ddrSyncIdentifier for object of type")
+            println("no ddrSyncIdentifier for object of type")
         } else {
             super.valueForUndefinedKey(key)
         }
@@ -30,7 +30,7 @@ public class DDRSyncedManagedObject : DDRManagedObject {
 
     public override func setValue(value: AnyObject!, forUndefinedKey key: String) {
         if key == "ddrSyncIdentifier" {
-            NSLog("no ddrSyncIdentifier for object of type")
+            println("no ddrSyncIdentifier for object of type")
         } else {
             super.setValue(value, forUndefinedKey: key)
         }
