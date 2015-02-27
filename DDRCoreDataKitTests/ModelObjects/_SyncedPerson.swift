@@ -4,6 +4,7 @@
 import CoreData
 
 enum SyncedPersonAttributes: String {
+    case ddrSyncIdentifier = "ddrSyncIdentifier"
     case firstName = "firstName"
     case lastName = "lastName"
 }
@@ -33,6 +34,11 @@ class _SyncedPerson: DDRManagedObject {
     }
 
     // MARK: - Properties
+
+    @NSManaged public
+    var ddrSyncIdentifier: String?
+
+    // func validateDdrSyncIdentifier(value: AutoreleasingUnsafePointer<AnyObject>, error: NSErrorPointer) {}
 
     @NSManaged public
     var firstName: String?

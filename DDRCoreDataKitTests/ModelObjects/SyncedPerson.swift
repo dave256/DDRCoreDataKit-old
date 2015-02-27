@@ -1,10 +1,10 @@
 import Foundation
 
 @objc(SyncedPerson)
-class SyncedPerson: _SyncedPerson {
+public class SyncedPerson: _SyncedPerson {
 
-	// Custom logic goes here.
-    override func awakeFromInsert() {
+    /// sets the ddrSyncIdentifier to a unique value
+    public override func awakeFromInsert() {
         super.awakeFromInsert()
         var desc = self.entity
         if desc.attributesByName["ddrSyncIdentifier"] != nil {
@@ -12,18 +12,21 @@ class SyncedPerson: _SyncedPerson {
         }
     }
 
-    override func valueForUndefinedKey(key: String) -> AnyObject {
+    /// override valueForUndefinedKey: so can print an error message if user forgets to add an attribute named ddrSyncIdentifier to their CoreData model
+    public override func valueForUndefinedKey(key: String) -> AnyObject {
         if key == "ddrSyncIdentifier" {
-            NSLog("no ddrSyncIdentifier for object of type")
+            let name = DDRManagedObject.entityName()
+            println("no ddrSyncIdentifier for object of type: \(name)")
         } else {
             super.valueForUndefinedKey(key)
         }
         return ""
     }
 
-    override func setValue(value: AnyObject!, forUndefinedKey key: String) {
+    /// override value:forUndefinedKey so can print an error message if user forgets to add an attribute named ddrSyncIdentifier to their CoreData model
+    public override func setValue(value: AnyObject!, forUndefinedKey key: String) {
         if key == "ddrSyncIdentifier" {
-            NSLog("no ddrSyncIdentifier for object of type")
+            println("no ddrSyncIdentifier for object of type")
         } else {
             super.setValue(value, forUndefinedKey: key)
         }
