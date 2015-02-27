@@ -57,7 +57,7 @@ class DDRCoreDataKitTests: XCTestCase {
             assertDaveSmith(p)
 
             var error : NSError?
-            doc.saveContext(true, error: &error)
+            doc.saveContextAndWait(true, error: &error)
             XCTAssertNil(error, "save error not nil: \(error?.localizedDescription) \(error?.userInfo)")
         } else {
             XCTFail("mainMOC is nil")
@@ -110,7 +110,7 @@ class DDRCoreDataKitTests: XCTestCase {
             assertJohnStroeh(p)
 
             var error : NSError?
-            doc?.saveContext(true, error: &error)
+            doc?.saveContextAndWait(true, error: &error)
             XCTAssertNil(error, "save error not nil: \(error?.localizedDescription) \(error?.userInfo)")
 
         } else {

@@ -78,17 +78,19 @@ public class DDRCoreDataDocument {
     /// :param: error out parameter with NSError message if fails
     /// 
     /// :returns: true if save succeeds; false otherwise
-    public func saveContext(wait: Bool, error : NSErrorPointer) -> Bool {
+    public func saveContextAndWait(wait: Bool, error: NSErrorPointer) -> Bool {
         if mainQueueMOC == nil {
             return false
         }
 
+        var failed = false
         // if mainQueueMOC has changes, save changes up to its parent context
         if mainQueueMOC.hasChanges {
             mainQueueMOC.performBlockAndWait {
                 var saveError : NSError? = nil
                 if self.mainQueueMOC.save(&saveError) {
                     if let theError = saveError {
+                        failed = true
                         println("error saving mainQueueMOC: \(theError.localizedDescription)")
                         if error != nil {
                             error.memory = theError
@@ -100,10 +102,11 @@ public class DDRCoreDataDocument {
 
         // closure for saving private context
         var saveClosure : () -> () = {
-            var saveError : NSError? = nil
-            if self.privateMOC.save(&saveError) {
+        var saveError : NSError? = nil
+            if !self.privateMOC.save(&saveError) {
                 if let theError = saveError {
                     println("error saving privateMOC: \(theError.localizedDescription)")
+                    failed = true
                     if error != nil {
                         error.memory = theError
                     }
@@ -112,7 +115,7 @@ public class DDRCoreDataDocument {
         }
 
         // save changes from privateMOC to persistent store
-        if error != nil {
+        if !failed {
             if privateMOC.hasChanges {
                 if wait {
                     privateMOC.performBlockAndWait(saveClosure)
@@ -123,7 +126,7 @@ public class DDRCoreDataDocument {
             }
         }
 
-        if error != nil {
+        if failed {
             return false
         } else {
             return true
