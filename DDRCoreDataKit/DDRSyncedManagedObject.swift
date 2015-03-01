@@ -12,7 +12,7 @@ since this code now uses mogenerator, if you want some of the classes to have th
 
 or if you want all your files to have thse, you could tell mogenerator to inherit from DDRSyncedManagedObject instead of DDRManagedObject
 
-this class assumes your Core Data entity has an abbirute of type string named ddrSyncIdentifier
+this class assumes your Core Data entity has an attribute of type string named ddrSyncIdentifier
 */
 public class DDRSyncedManagedObject : DDRManagedObject {
 
