@@ -23,10 +23,12 @@ class _Person: DDRManagedObject {
 
     // MARK: - Life cycle methods
 
+    public
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext!) {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
     }
 
+	public
     convenience init(managedObjectContext: NSManagedObjectContext!) {
         let entity = _Person.entity(managedObjectContext)
         self.init(entity: entity, insertIntoManagedObjectContext: managedObjectContext)
