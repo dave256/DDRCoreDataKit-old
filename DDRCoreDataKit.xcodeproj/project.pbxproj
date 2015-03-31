@@ -255,7 +255,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"$PROJECT_DIR/$TARGET_NAME\" && /Users/dreed/bin/mogenerator --swift -m \"$TARGET_NAME\".xcdatamodeld --base-class DDRManagedObject --output-dir ./ModelObjects";
+			shellScript = "cd \"$PROJECT_DIR/$TARGET_NAME\" && $HOME/bin/mogenerator --swift -m \"$TARGET_NAME\".xcdatamodeld --base-class DDRManagedObject --output-dir ./ModelObjects";
 		};
 /* End PBXShellScriptBuildPhase section */
 

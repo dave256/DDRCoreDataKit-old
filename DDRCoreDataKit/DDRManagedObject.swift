@@ -18,7 +18,7 @@ If you manually added the DDRManagedObject.swift file to your project, you will 
 cd "$PROJECT_DIR/$TARGET_NAME" && /Users/dreed/bin/mogenerator --swift -m "$TARGET_NAME".xcdatamodeld --base-class DDRManagedObject --output-dir ./ModelObjects
 
 If you add the DDRCoreDataKit project as a module to your Xcode workspace, you will want to use something like:
-cd "$PROJECT_DIR/$TARGET_NAME" && /Users/dreed/bin/mogenerator --swift -m "$TARGET_NAME".xcdatamodeld --base-class DDRManagedObject --base-class-import DDRCoreDataKit  --output-dir ./ModelObjects
+cd "$PROJECT_DIR/$TARGET_NAME" && $HOME/bin/mogenerator --swift -m "$TARGET_NAME".xcdatamodeld --base-class DDRManagedObject --base-class-import DDRCoreDataKit  --output-dir ./ModelObjects
 
 note: uses own version of mogenerator in https://github.com/dave256/mogenerator/tree/swift-public
 so that --base-class-import DDRCoreDataKit adds the statment "import DDRCoreDataKit" to the machine generated file (one that starts with an underscore)
