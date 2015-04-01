@@ -33,8 +33,8 @@ public class DDRCoreDataDocument {
     public let mainQueueMOC : NSManagedObjectContext!
 
 
-    private let managedObjectModel : NSManagedObjectModel
-    private let persistentStoreCoordinator : NSPersistentStoreCoordinator
+    private let managedObjectModel : NSManagedObjectModel!
+    private let persistentStoreCoordinator : NSPersistentStoreCoordinator!
     private let storeURL : NSURL!
 
     // private data
@@ -44,17 +44,36 @@ public class DDRCoreDataDocument {
     ///
     /// :param: storeURL NSURL for the SQLite store; pass nil to use an in memory store
     /// :param: modelURL NSURL for the CoreData object model (i.e., URL to the .momd file package/directory)
-    /// :param: options to pass when creating the persistent store coordinator; usually [NSMigratePersistentStoresAutomaticallyOption: true, NSInferMappingModelAutomaticallyOption: true] for automatic migration
-    public init?(storeURL: NSURL?, modelURL: NSURL, options : NSDictionary) {
+    /// :param: options to pass when creating the persistent store coordinator; if pass nil, it uses [NSMigratePersistentStoresAutomaticallyOption: true, NSInferMappingModelAutomaticallyOption: true] for automatic migration; pass an empty dictionary [ : ] if want no options
+    public init?(storeURL: NSURL?, modelURL: NSURL, options : [NSObject : AnyObject]! = nil) {
 
-        managedObjectModel = NSManagedObjectModel(contentsOfURL: modelURL)!
-        persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
+        let pscOptions : [NSObject : AnyObject]
+
+        // if passed in nil, use options for automatic migration otherwise used the specified options
+        if options == nil {
+            pscOptions = [NSMigratePersistentStoresAutomaticallyOption: true, NSInferMappingModelAutomaticallyOption: true]
+        } else {
+            pscOptions = options
+        }
+
+        // try to read model file
+        managedObjectModel = NSManagedObjectModel(contentsOfURL: modelURL)
+
+        // return nil if unable to
+        if managedObjectModel == nil {
+            persistentStoreCoordinator = nil
+            mainQueueMOC = nil
+            privateMOC = nil
+            self.storeURL = nil
+            return nil
+        }
 
         var storeType : String = (storeURL != nil) ? NSSQLiteStoreType : NSInMemoryStoreType
+        persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
 
         // try to create the persistent store
         var addError : NSError? = nil
-        if !(persistentStoreCoordinator.addPersistentStoreWithType(storeType, configuration: nil, URL: storeURL, options: options as [NSObject : AnyObject], error: &addError) != nil) {
+        if !(persistentStoreCoordinator.addPersistentStoreWithType(storeType, configuration: nil, URL: storeURL, options: pscOptions, error: &addError) != nil) {
             if let error = addError {
                 println("Error adding persitent store to coordinator \(error.localizedDescription) \(error.userInfo!)")
             }

@@ -39,7 +39,7 @@ class DDRCoreDataKitTests: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         storeURL = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingPathComponent("test.sqlite"))
         let modelURL = NSBundle(forClass: DDRCoreDataDocument.self).URLForResource("DDRCoreDataKitTests", withExtension: "momd")!
-        doc = DDRCoreDataDocument(storeURL: storeURL, modelURL: modelURL, options: NSDictionary())
+        doc = DDRCoreDataDocument(storeURL: storeURL, modelURL: modelURL, options: nil)
         XCTAssertNotNil(doc, "doc is nil when it should not be")
     }
     
@@ -61,7 +61,7 @@ class DDRCoreDataKitTests: XCTestCase {
     func testCoreDateDocumentError() {
         let badURL = NSURL(fileURLWithPath: "/no-directory/file.sql")
         let modelURL = NSBundle(forClass: DDRCoreDataDocument.self).URLForResource("DDRCoreDataKitTests", withExtension: "momd")!
-        doc = DDRCoreDataDocument(storeURL: badURL, modelURL: modelURL, options: NSDictionary())
+        doc = DDRCoreDataDocument(storeURL: badURL, modelURL: modelURL, options: nil)
         XCTAssertNil(doc, "doc is not nil for a bad URL")
     }
 
