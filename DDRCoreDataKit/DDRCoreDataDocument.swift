@@ -18,7 +18,7 @@ the mainQueueMOC is a child context of the private context and is intended for u
 
 also provices a method to get a child context of this main thread
 
-the saveContext method saves from the mainQueueMOC to the private context and do the persistent store
+the saveContext method saves from the mainQueueMOC to the private context and to the persistent store
 
 */
 public class DDRCoreDataDocument {
