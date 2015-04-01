@@ -8,6 +8,12 @@
 
 import CoreData
 
+public enum DDROkOrError {
+    case Ok
+    case Error(NSError)
+    case ErrorString(String)
+}
+
 /**
 class for accessing a Core Data Store
 
@@ -75,13 +81,14 @@ public class DDRCoreDataDocument {
     /// save the main and private contexts to the persistent store
     ///
     /// :param: wait true if want to wait for save to persistent store to complete; false if want to return as soon as main context saves to private context
-    /// :param: error out parameter with NSError message if fails
-    /// 
-    /// :returns: true if save succeeds; false otherwise
-    public func saveContextAndWait(wait: Bool, error: NSErrorPointer) -> Bool {
+    ///
+    /// :returns: DDROkOrError.Ok if save succeeds; DDROkOrError.Error otherwise
+    public func saveContextAndWait(wait: Bool) -> DDROkOrError {
         if mainQueueMOC == nil {
-            return false
+            return DDROkOrError.ErrorString("no NSManagedObjectContext")
         }
+
+        var error: NSError!
 
         var failed = false
         // if mainQueueMOC has changes, save changes up to its parent context
@@ -92,9 +99,7 @@ public class DDRCoreDataDocument {
                     if let theError = saveError {
                         failed = true
                         println("error saving mainQueueMOC: \(theError.localizedDescription)")
-                        if error != nil {
-                            error.memory = theError
-                        }
+                        error = theError
                     }
                 }
             }
@@ -103,19 +108,17 @@ public class DDRCoreDataDocument {
         // closure for saving private context
         var saveClosure : () -> () = {
         var saveError : NSError? = nil
-            if !self.privateMOC.save(&saveError) {
+            if !(self.privateMOC.save(&saveError)) {
                 if let theError = saveError {
                     println("error saving privateMOC: \(theError.localizedDescription)")
                     failed = true
-                    if error != nil {
-                        error.memory = theError
-                    }
+                    error = theError
                 }
             }
         }
 
         // save changes from privateMOC to persistent store
-        if !failed {
+        if !(failed) {
             if privateMOC.hasChanges {
                 if wait {
                     privateMOC.performBlockAndWait(saveClosure)
@@ -127,9 +130,9 @@ public class DDRCoreDataDocument {
         }
 
         if failed {
-            return false
+            return DDROkOrError.Error(error)
         } else {
-            return true
+            return DDROkOrError.Ok
         }
     }
 

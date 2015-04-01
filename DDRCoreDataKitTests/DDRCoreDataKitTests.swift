@@ -10,6 +10,25 @@ import XCTest
 import CoreData
 import DDRCoreDataKit
 
+func checkSaveError(status: DDROkOrError, shouldBeOk: Bool = true) {
+
+    var ok: Bool = true
+    switch status {
+    case .Ok:
+        if !shouldBeOk {
+            XCTFail("save worked when it should have failed")
+        }
+    case .Error(let error):
+        if (shouldBeOk) {
+            XCTFail("save failed: \(error.localizedDescription) \(error.userInfo)")
+        }
+    case .ErrorString(let s):
+        if (shouldBeOk) {
+            XCTFail("save failed: \(s)")
+        }
+    }
+}
+
 class DDRCoreDataKitTests: XCTestCase {
 
     var storeURL : NSURL? = nil
@@ -21,6 +40,7 @@ class DDRCoreDataKitTests: XCTestCase {
         storeURL = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingPathComponent("test.sqlite"))
         let modelURL = NSBundle(forClass: DDRCoreDataDocument.self).URLForResource("DDRCoreDataKitTests", withExtension: "momd")!
         doc = DDRCoreDataDocument(storeURL: storeURL, modelURL: modelURL, options: NSDictionary())
+        XCTAssertNotNil(doc, "doc is nil when it should not be")
     }
     
     override func tearDown() {
@@ -38,8 +58,26 @@ class DDRCoreDataKitTests: XCTestCase {
     }
 */
 
+    func testCoreDateDocumentError() {
+        let badURL = NSURL(fileURLWithPath: "/no-directory/file.sql")
+        let modelURL = NSBundle(forClass: DDRCoreDataDocument.self).URLForResource("DDRCoreDataKitTests", withExtension: "momd")!
+        doc = DDRCoreDataDocument(storeURL: badURL, modelURL: modelURL, options: NSDictionary())
+        XCTAssertNil(doc, "doc is not nil for a bad URL")
+    }
+
+    func testSaveError() {
+        let moc = doc.mainQueueMOC
+        insertDaveReedInManagedObjectContext(moc)
+
+        var error: NSError? = nil
+        NSFileManager.defaultManager().removeItemAtURL(storeURL!, error: &error)
+        XCTAssertNil(error, "failed to delete file: \(error?.localizedDescription) \(error?.userInfo)")
+        let status = doc.saveContextAndWait(true)
+        checkSaveError(status, shouldBeOk: false)
+    }
+
     func testInsertionOfPersonObjects() {
-        var moc = doc.mainQueueMOC
+        let moc = doc.mainQueueMOC
 
         if moc != nil {
             insertDaveReedInManagedObjectContext(moc)
@@ -56,16 +94,16 @@ class DDRCoreDataKitTests: XCTestCase {
             p = items[1] as! Person
             assertDaveSmith(p)
 
-            var error : NSError?
-            doc.saveContextAndWait(true, error: &error)
-            XCTAssertNil(error, "save error not nil: \(error?.localizedDescription) \(error?.userInfo)")
+            let status = doc.saveContextAndWait(true)
+            checkSaveError(status)
+
         } else {
             XCTFail("mainMOC is nil")
         }
     }
 
     func testChildManagedObjectContext() {
-        var moc = doc.mainQueueMOC
+        let moc = doc.mainQueueMOC
 
         if moc != nil {
             let childMOC = doc.newChildOfMainObjectContextWithConcurrencyType(NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType)
@@ -110,16 +148,15 @@ class DDRCoreDataKitTests: XCTestCase {
             assertJohnStroeh(p)
 
             var error : NSError?
-            doc?.saveContextAndWait(true, error: &error)
-            XCTAssertNil(error, "save error not nil: \(error?.localizedDescription) \(error?.userInfo)")
-
+            let status = doc!.saveContextAndWait(true)
+            checkSaveError(status)
         } else {
             XCTFail("mainMOC is nil")
         }
     }
 
     func testSyncedPerson() {
-        var moc = doc.mainQueueMOC
+        let moc = doc.mainQueueMOC
 
         if moc != nil {
             var p = SyncedPerson(managedObjectContext: moc)
