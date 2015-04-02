@@ -14,6 +14,8 @@ public enum DDROkOrError {
     case ErrorString(String)
 }
 
+public typealias DDRCoreDataDocumentCompletionClosure = (status: DDROkOrError, doc: DDRCoreDataDocument?) -> Void
+
 /**
 class for accessing a Core Data Store
 
@@ -25,6 +27,10 @@ the mainQueueMOC is a child context of the private context and is intended for u
 also provices a method to get a child context of this main thread
 
 the saveContext method saves from the mainQueueMOC to the private context and to the persistent store
+
+a combination of ideas from Zarra's book and this blog post
+
+http://martiancraft.com/blog/2015/03/core-data-stack/
 
 */
 public class DDRCoreDataDocument {
@@ -40,7 +46,7 @@ public class DDRCoreDataDocument {
     // private data
     private var privateMOC : NSManagedObjectContext! = nil
 
-    /// create a DDRCoreDataDocument with two context; will fail (return nil) if cannot create the persistent store
+    /// create a DDRCoreDataDocument with two contexts; will fail (return nil) if cannot create the persistent store
     ///
     /// :param: storeURL NSURL for the SQLite store; pass nil to use an in memory store
     /// :param: modelURL NSURL for the CoreData object model (i.e., URL to the .momd file package/directory)
@@ -95,6 +101,29 @@ public class DDRCoreDataDocument {
             mainQueueMOC!.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
             mainQueueMOC!.parentContext = privateMOC
         }
+    }
+
+    /// create a DDRCoreDataDocument with two contexts on a background thread
+    ///
+    /// :param: storeURL NSURL for the SQLite store; pass nil to use an in memory store
+    /// :param: modelURL NSURL for the CoreData object model (i.e., URL to the .momd file package/directory)
+    /// :param: options to pass when creating the persistent store coordinator; if pass nil, it uses [NSMigratePersistentStoresAutomaticallyOption: true, NSInferMappingModelAutomaticallyOption: true] for automatic migration; pass an empty dictionary [ : ] if want no options
+    /// :param: completionClosure a closure (status: DDROkOrError, doc: DDRCoreDataDocument?
+    /// :post: calls completionClosure with DDROkOrError.OK and the initialized DDRCoreDataDocument if success. otherwise completionClosure is called with DDROkOrError.ErrorString and doc is nil
+    public class func createInBackgroundWithCompletionHandler(storeURL: NSURL?, modelURL: NSURL, options : [NSObject : AnyObject]! = nil, completionClosure: DDRCoreDataDocumentCompletionClosure? = nil) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+            let doc = DDRCoreDataDocument(storeURL: storeURL, modelURL: modelURL, options: options)
+            let status : DDROkOrError
+            if doc == nil {
+                status = DDROkOrError.ErrorString("Could not create DDRCoreDataDocument")
+            }
+            else {
+                status = DDROkOrError.Ok
+            }
+            dispatch_sync(dispatch_get_main_queue(), { () -> Void in
+                completionClosure?(status: status, doc: doc)
+            })
+        })
     }
 
     /// save the main and private contexts to the persistent store
