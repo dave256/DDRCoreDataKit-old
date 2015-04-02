@@ -68,8 +68,7 @@ public class DDRManagedObject: NSManagedObject {
         }
 
         // execute request
-        var executeError : NSError? = nil
-        var results = moc.executeFetchRequest(request, error: &executeError)
+        let (results, executeError) = moc.executeFetchRequest(request)
         if let error = executeError {
             println("Error loading \(request) \(predicate) \(error)")
         }

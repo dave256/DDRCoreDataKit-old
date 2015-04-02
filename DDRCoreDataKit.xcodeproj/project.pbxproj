@@ -20,6 +20,7 @@
 		03D305C2194B9F6A00FF2F68 /* DDRCoreDataDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D305C1194B9F6A00FF2F68 /* DDRCoreDataDocument.swift */; };
 		03D305C3194B9F6A00FF2F68 /* DDRCoreDataDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D305C1194B9F6A00FF2F68 /* DDRCoreDataDocument.swift */; };
 		03D305C6194BB3A900FF2F68 /* DDRCoreDataKitTests.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 03D305C4194BB3A900FF2F68 /* DDRCoreDataKitTests.xcdatamodeld */; };
+		03E788E81ACDF1E100BA5444 /* DDRManagedObjectContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E788E71ACDF1E100BA5444 /* DDRManagedObjectContext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		03D305BE194B8B7A00FF2F68 /* DDRManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDRManagedObject.swift; sourceTree = "<group>"; };
 		03D305C1194B9F6A00FF2F68 /* DDRCoreDataDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDRCoreDataDocument.swift; sourceTree = "<group>"; };
 		03D305C5194BB3A900FF2F68 /* DDRCoreDataKitTests.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DDRCoreDataKitTests.xcdatamodel; sourceTree = "<group>"; };
+		03E788E71ACDF1E100BA5444 /* DDRManagedObjectContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDRManagedObjectContext.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				03D305BE194B8B7A00FF2F68 /* DDRManagedObject.swift */,
 				030D23C219537A4400C19059 /* DDRSyncedManagedObject.swift */,
 				03D305C1194B9F6A00FF2F68 /* DDRCoreDataDocument.swift */,
+				03E788E71ACDF1E100BA5444 /* DDRManagedObjectContext.swift */,
 			);
 			path = DDRCoreDataKit;
 			sourceTree = "<group>";
@@ -267,6 +270,7 @@
 				03D305C2194B9F6A00FF2F68 /* DDRCoreDataDocument.swift in Sources */,
 				03D305BF194B8B7A00FF2F68 /* DDRManagedObject.swift in Sources */,
 				030D23C319537A4400C19059 /* DDRSyncedManagedObject.swift in Sources */,
+				03E788E81ACDF1E100BA5444 /* DDRManagedObjectContext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
