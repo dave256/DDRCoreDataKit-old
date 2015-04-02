@@ -6,6 +6,10 @@
 //  Copyright (c) 2014 David Reed. All rights reserved.
 //
 
+#if os(iOS)
+    import UIKit
+#endif
+
 import CoreData
 
 public enum DDROkOrError {
@@ -183,6 +187,16 @@ public class DDRCoreDataDocument {
             return DDROkOrError.Ok
         }
     }
+
+
+    #if os(iOS)
+    /// save task on iOS so it runs even if app is quit
+    public func saveContextWithBackgroundTask() {
+        let backgroundTaskID = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler {}
+        saveContextAndWait(true)
+        UIApplication.sharedApplication().endBackgroundTask(backgroundTaskID)
+    }
+    #endif
 
     /// creates a new child NSManagedObjectContext of the main thread/queue context
     ///
